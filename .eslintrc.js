@@ -16,6 +16,7 @@ module.exports = {
     },
     "rules": {
         "comma-dangle": "off",
-        "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]
+        "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"],
+        "object-curly-newline": "off"
     }
 }
