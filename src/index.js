@@ -21,7 +21,8 @@ mongoose
   .connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(() => {
     // eslint-disable-next-line no-console
