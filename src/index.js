@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -14,7 +15,20 @@ app.use(bodyParser.json());
 
 routesV1(app);
 
-app.listen(4000, () => {
-  // eslint-disable-next-line no-console
-  console.log('Running on 4000');
-});
+const { PORT } = process.env || 4000;
+
+mongoose
+  .connect(process.env.MONGO, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log('Conected to MongoDB.');
+    app.listen(PORT, () => {
+      // eslint-disable-next-line no-console
+      console.log(`Running on ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log('MongoDB error. ', error);
+  });
