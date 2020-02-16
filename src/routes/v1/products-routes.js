@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/create', productsController.createProduct);
 router.post('/delete', productsController.deleteProduct);
-router.post('/get-products', productsController.getProducts);
+router.get('/get-all', productsController.getProducts);
+router.get('/get-by-user/:userId', productsController.getProductsByUser)
 
 module.exports = router;

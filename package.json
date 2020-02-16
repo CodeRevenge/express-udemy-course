@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js localhost 4000",
+    "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,6 +37,6 @@
       "test/*",
       "docs/*"
     ],
-    "delay": "3500"
+    "delay": "500"
   }
 }

@@ -20,9 +20,11 @@ const { PORT } = process.env || 4000;
 mongoose
   .connect(process.env.MONGO, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .then(() => {
+    // eslint-disable-next-line no-console
     console.log('Conected to MongoDB.');
     app.listen(PORT, () => {
       // eslint-disable-next-line no-console
@@ -30,5 +32,6 @@ mongoose
     });
   })
   .catch((error) => {
+    // eslint-disable-next-line no-console
     console.log('MongoDB error. ', error);
   });
