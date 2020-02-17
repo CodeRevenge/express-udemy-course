@@ -14,15 +14,7 @@ const isAuth = (req, res, next) => {
     const { token } = req.headers;
     if (token) {
       const data = jwt.verify(token, process.env.JWT_SECRET);
-      console.log('jwt data', data);
-      if (data.userId !== req.body.userId && data.role !== 'admin') {
-        // eslint-disable-next-line no-throw-literal
-        throw {
-          code: 403,
-          status: 'ACCESS_DENIED',
-          message: 'Missing permission or invalid role.'
-        };
-      }
+      req.sessionData = { userId: data.userId };
       next();
     } else {
       // eslint-disable-next-line no-throw-literal
