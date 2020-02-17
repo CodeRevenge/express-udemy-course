@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Users = require('../../mongo/models/users');
 
-const expiresIn = 60 * 10;
+const expiresIn = '1d';
 
 const login = async (req, res) => {
   try {

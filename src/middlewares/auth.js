@@ -13,7 +13,16 @@ const isAuth = (req, res, next) => {
   try {
     const { token } = req.headers;
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET);
+      const data = jwt.verify(token, process.env.JWT_SECRET);
+      console.log('jwt data', data);
+      if (data.userId !== req.body.userId && data.role !== 'admin') {
+        // eslint-disable-next-line no-throw-literal
+        throw {
+          code: 403,
+          status: 'ACCESS_DENIED',
+          message: 'Missing permission or invalid role.'
+        };
+      }
       next();
     } else {
       // eslint-disable-next-line no-throw-literal
@@ -24,7 +33,9 @@ const isAuth = (req, res, next) => {
       };
     }
   } catch (e) {
-    res.status(e.code || 500).send({ status: e.status || 'ERROR', message: e.message });
+    res
+      .status(e.code || 500)
+      .send({ status: e.status || 'ERROR', message: e.message });
   }
 };
 
