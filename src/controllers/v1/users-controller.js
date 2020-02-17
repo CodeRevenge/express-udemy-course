@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Users = require('../../mongo/models/users');
+const Products = require('../../mongo/models/products');
 
 const expiresIn = '1d';
 
@@ -71,12 +72,30 @@ const createUser = async (req, res) => {
   }
 };
 
-const deleteUser = (req, res) => {
-  res.send({ status: 'OK', message: 'User deleted' });
+const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      throw new Error('Missing param userId.');
+    }
+
+    await Users.findOneAndDelete(userId);
+    await Products.deleteMany({ user: userId });
+
+    res.send({ status: 'OK', message: 'User deleted' });
+  } catch (e) {
+    res.status(500).send({ status: 'ERROR', message: e.message });
+  }
 };
 
-const getUsers = (req, res) => {
-  res.send({ status: 'OK', message: [] });
+const getUsers = async (req, res) => {
+  try {
+    const users = await Users.find().select({ password: 0, __v: 0, role: 0 });
+    res.send({ status: 'OK', data: users });
+  } catch (e) {
+    res.status(500).send({ status: 'ERROR', message: e.message });
+  }
 };
 
 const updateUser = async (req, res) => {

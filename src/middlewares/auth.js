@@ -14,7 +14,7 @@ const isAuth = (req, res, next) => {
     const { token } = req.headers;
     if (token) {
       const data = jwt.verify(token, process.env.JWT_SECRET);
-      req.sessionData = { userId: data.userId };
+      req.sessionData = { userId: data.userId, role: data.role };
       next();
     } else {
       // eslint-disable-next-line no-throw-literal
@@ -31,4 +31,23 @@ const isAuth = (req, res, next) => {
   }
 };
 
-module.exports = { isValidHostname, isAuth };
+const isAdmin = (req, res, next) => {
+  try {
+    const { role } = req.sessionData;
+    if (role !== 'admin') {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        code: 403,
+        status: 'ACCESS_DENIED',
+        message: 'Invalid role.'
+      };
+    } else {
+      next();
+    }
+  } catch (e) {
+    res
+      .status(e.code || 500)
+      .send({ status: e.status || 'ERROR', message: e.message });
+  }
+};
+module.exports = { isValidHostname, isAuth, isAdmin };
